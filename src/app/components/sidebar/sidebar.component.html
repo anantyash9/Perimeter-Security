@@ -1,0 +1,130 @@
+<div class="divheight" >
+    <h1>Sarjapur Campus</h1>
+    <h2>South Side Perimeter</h2>
+    <h3>Perimeter lenght : 3.42 km</h3>
+    <mat-accordion>
+          <mat-expansion-panel >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Wall Integrity Alerts
+              </mat-panel-title>
+              <mat-panel-description>
+                Instances of wall breakdown
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-list>
+                <mat-list-item *ngFor="let defect of defects" (click)="zoomTo(defect)">
+                  <mat-icon  mat-list-icon [ngClass]="{
+                    'red-icon': defect.defect=='damage',
+                    'orange-icon ': defect.defect=='temporary',
+                    'yellow-icon ': defect.defect=='open'}">warning</mat-icon>
+                  <div mat-line>{{defect.defect | titlecase}}</div>
+                  <div mat-line><b>Length : </b> {{defect.length}} Meter</div>
+                  <div mat-line><b>Date : </b> {{"09-07-2022" | date}} </div>
+                </mat-list-item>
+              </mat-list>
+          </mat-expansion-panel>
+        </mat-accordion>
+<br>
+        <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Perimeter Security Alerts
+                </mat-panel-title>
+                <mat-panel-description>
+                  Unauthorized person or Vehicle
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <mat-list>
+                  <mat-list-item *ngFor="let alert of alerts" (click)="viewAlert(alert)">
+                    <mat-icon  mat-list-icon [ngClass]="{
+                      'red-icon': alert.type=='person',
+                      'yellow-icon ': alert.type=='vehicle'}">warning</mat-icon>
+                    <div mat-line>{{alert.type | titlecase}}</div>
+                    <div mat-line><b>Date : </b> {{"09-07-2022" | date}} </div>
+                  </mat-list-item>
+                </mat-list>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <br>
+          <mat-accordion>
+            <mat-expansion-panel [expanded]="true">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Full Perimeter Drone Video
+                </mat-panel-title>
+                <mat-panel-description>
+                Aerial video of entire perimeter
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <video width="100%" controls><source src="https://forums-survey.s3.us-east-2.amazonaws.com/perimeter/DJI_0582.MP4" type="video/mp4"></video>
+              <!-- add mat card with pipeline details -->
+            </mat-expansion-panel>
+        </mat-accordion>
+</div>
+
+<div *ngIf="showPipelineDetails()">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                {{pipeline_selected.pipeline_name}}
+            </mat-card-title>
+            <mat-card-subtitle>
+                {{pipeline_selected.detection_type}}
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <h3>Total trees: {{results.length}}</h3>
+            <br>
+            <h3>Healthy Trees: {{results.length*0.8}}</h3>
+            <br>
+            <h3>Damaged Trees: {{results.length*0.2}}</h3>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button (click)="backToPipelines()">Back</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
+<div *ngIf="showNewPipeline()">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                Create Pipeline
+            </mat-card-title>
+            <mat-card-subtitle>
+                Scan Selected:{{scan_selected.task_name}}
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <!-- create a mat from for getting pipeline name and type -->
+            <mat-form-field>
+                <input matInput placeholder="Pipeline Name" [(ngModel)]="new_pipeline.pipeline_name">
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <input matInput placeholder="Area" [(ngModel)]="new_pipeline.area" readonly>
+            </mat-form-field>
+            <br>
+            <!-- creat a dropdown for getting pipeline type -->
+            <mat-form-field>
+                <mat-select placeholder="Pipeline Type" [(ngModel)]="new_pipeline.detection_type" (selectionChange)="customCheck()">
+                    <mat-option *ngFor="let type of pipeline_types" [value]="type">
+                        {{type}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf="new_pipeline.detection_type=='Custom'">
+                    <input matInput placeholder="Model Name" [(ngModel)]="modelName">
+            </mat-form-field>
+        <div *ngIf="new_pipeline.detection_type=='Custom'">
+              <h3>Number of Examples :{{annotations.length}} </h3>  
+        </div>
+            <!-- back button -->
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button (click)="backToPipelines()">Cancel</button>
+            <button mat-raised-button (click)="createPipeline()">Save</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

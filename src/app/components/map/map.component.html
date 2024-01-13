@@ -1,0 +1,47 @@
+<!-- <mat-grid-list cols="1" rows="4" rowHeight="90vh">
+     <mat-grid-tile *ngIf="show_pipeline"
+         [colspan]=1
+         [rowspan]=1>
+       <app-sidebar></app-sidebar>
+     </mat-grid-tile>
+     <mat-grid-tile
+         [colspan]=1
+         [rowspan]=4>
+        
+     </mat-grid-tile>
+     </mat-grid-list> -->
+
+     <div *ngIf="showLayer">
+          <div class="map-container"
+               leaflet 
+               [leafletOptions]="options"
+               [leafletZoom]="zoom" 
+               [leafletFitBoundsOptions]="mapFitToBoundsOptions"
+               (leafletMapReady)="onMapReady($event)"
+               *ngIf="tokenLoaded"
+               >
+               <div *ngIf="drawState.show_draw_tools && (drawState.save_to_annotations==false || drawState.save_to_annotations==undefined) " leafletDraw [leafletDrawOptions]="drawOptions" (leafletDrawCreated)="onDrawCreated($event)"></div>
+               <div *ngIf="drawState.save_to_annotations" leafletDraw [leafletDrawOptions]="drawOptions2" (leafletDrawCreated)="onDrawCreated($event)"></div>
+
+               <div *ngFor="let layer of layers"  >
+               <div *ngIf="showLayer" [leafletLayer]="layer"></div>
+          </div>
+          <div *ngFor="let layer of odm_layers"  >
+               <div *ngIf="tokenLoaded" [leafletLayer]="layer"></div>
+          </div>
+          <div *ngFor="let layer of overlay_layers"  >
+               <div *ngIf="tokenLoaded" [leafletLayer]="layer"></div>
+          </div>   
+
+     
+          <!-- results_layers -->
+          <div *ngFor="let layer of results_layers"  >
+               <div *ngIf="showResults" [leafletLayer]="layer"></div>
+          </div>  
+               <div *ngFor="let layer of pipeline_layers"  >
+                    <div *ngIf="show_pipeline" [leafletLayer]="layer"></div>
+               </div>     
+          
+          <div [leafletLayer]="drawnItems"></div>
+          </div>
+          </div>

@@ -1,0 +1,19 @@
+.mat-nav-list {
+    width: 24vw;
+    align-items: flex-start;
+}
+ mat-card{
+    width: 22vw;
+}
+.red-icon {
+    color: rgb(255, 8, 0);
+}
+.orange-icon {
+    color: rgb(228, 92, 1);
+}
+.yellow-icon {
+    color: rgb(181, 184, 2);
+}
+.divheight {
+    overflow-y: auto;
+}

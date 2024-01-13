@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import 'leaflet/dist/leaflet.css';
+@import 'leaflet-draw/dist/leaflet.draw.css';
+.leaflet-draw-toolbar a {
+  background-image: url('https://unpkg.com/leaflet-draw@1.0.2/dist/images/spritesheet.png');
+  background-repeat: no-repeat;
+  color: transparent !important;
+}
+.mat-grid-tile .mat-figure {
+    justify-content: flex-start !important ;
+    align-items: flex-start !important;
+ }
